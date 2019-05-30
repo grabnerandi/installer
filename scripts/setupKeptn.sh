@@ -1,5 +1,5 @@
 #!/bin/bash
-REGISTRY_URL=$(kubectl describe svc docker-registry -n keptn | grep IP: | sed 's~IP:[ \t]*~~')
+# REGISTRY_URL=$(kubectl describe svc docker-registry -n keptn | grep IP: | sed 's~IP:[ \t]*~~')
 
 CONTROL_RELEASE="0.2.2"
 AUTHENTICATOR_RELEASE="0.2.2"
@@ -17,10 +17,10 @@ verify_kubectl $? "Creating cluster role for keptn failed."
 kubectl apply -f ../manifests/keptn/keptn-org-configmap.yaml
 verify_kubectl $? "Creating config map for keptn failed."
 
-# Mark internal docker registry as insecure registry for knative controller
-VAL=$(kubectl -n knative-serving get cm config-controller -o=json | jq -r .data.registriesSkippingTagResolving | awk '{print $1",'$REGISTRY_URL':5000"}')
-kubectl -n knative-serving get cm config-controller -o=yaml | yq w - data.registriesSkippingTagResolving $VAL | kubectl apply -f -
-verify_kubectl $? "Marking internal docker registry as insecure failed."
+# Mark internal docker registry as insecure registry for knative controller - REMOVED FOR EKS
+# VAL=$(kubectl -n knative-serving get cm config-controller -o=json | jq -r .data.registriesSkippingTagResolving | awk '{print $1",'$REGISTRY_URL':5000"}')
+# kubectl -n knative-serving get cm config-controller -o=yaml | yq w - data.registriesSkippingTagResolving $VAL | kubectl apply -f -
+# verify_kubectl $? "Marking internal docker registry as insecure failed."
 
 # Deploy knative eventing channels
 kubectl apply -f https://raw.githubusercontent.com/keptn/eventbroker/$EVENTBROKER_RELEASE/config/keptn-channel.yaml
@@ -91,20 +91,20 @@ kubectl delete -f https://raw.githubusercontent.com/keptn/bridge/$BRIDGE_RELEASE
 kubectl apply -f https://raw.githubusercontent.com/keptn/bridge/$BRIDGE_RELEASE/config/bridge.yaml
 verify_kubectl $? "Deploying keptn's bridge failed."
 
-# Set up SSL
-ISTIO_INGRESS_IP=$(kubectl describe svc istio-ingressgateway -n istio-system | grep "LoadBalancer Ingress:" | sed 's~LoadBalancer Ingress:[ \t]*~~')
-verify_variable "$ISTIO_INGRESS_IP" "ISTIO_INGRESS_IP is empty and could not be derived from the Istio ingress gateway." 
+# Set up SSL -> REMOVED for EKS
+# ISTIO_INGRESS_IP=$(kubectl describe svc istio-ingressgateway -n istio-system | grep "LoadBalancer Ingress:" | sed 's~LoadBalancer Ingress:[ \t]*~~')
+# verify_variable "$ISTIO_INGRESS_IP" "ISTIO_INGRESS_IP is empty and could not be derived from the Istio ingress gateway." 
 
-openssl req -nodes -newkey rsa:2048 -keyout key.pem -out certificate.pem  -x509 -days 365 -subj "/CN=$ISTIO_INGRESS_IP.xip.io"
+# openssl req -nodes -newkey rsa:2048 -keyout key.pem -out certificate.pem  -x509 -days 365 -subj "/CN=$ISTIO_INGRESS_IP.xip.io"
 
-kubectl create --namespace istio-system secret tls istio-ingressgateway-certs --key key.pem --cert certificate.pem
+# kubectl create --namespace istio-system secret tls istio-ingressgateway-certs --key key.pem --cert certificate.pem
 #verify_kubectl $? "Creating secret for istio-ingressgateway-certs failed."
 
-kubectl get gateway knative-ingress-gateway --namespace knative-serving -o=yaml | yq w - spec.servers[1].tls.mode SIMPLE | yq w - spec.servers[1].tls.privateKey /etc/istio/ingressgateway-certs/tls.key | yq w - spec.servers[1].tls.serverCertificate /etc/istio/ingressgateway-certs/tls.crt | kubectl apply -f -
-verify_kubectl $? "Updating knative ingress gateway with private key failed."
+# kubectl get gateway knative-ingress-gateway --namespace knative-serving -o=yaml | yq w - spec.servers[1].tls.mode SIMPLE | yq w - spec.servers[1].tls.privateKey /etc/istio/ingressgateway-certs/tls.key | yq w - spec.servers[1].tls.serverCertificate /etc/istio/ingressgateway-certs/tls.crt | kubectl apply -f -
+# verify_kubectl $? "Updating knative ingress gateway with private key failed."
 
-rm key.pem
-rm certificate.pem
+# rm key.pem
+# rm certificate.pem
 
 ##############################################
 ## Start validation of keptn installation   ##

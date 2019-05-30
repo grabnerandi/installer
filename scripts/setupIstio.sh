@@ -21,7 +21,7 @@ wait_for_all_pods_in_namespace "istio-system"
 # Delete all pods in keptn to apply Istio changes
 kubectl delete pods --all -n keptn
 verify_kubectl $? "Deleting pods in keptn namespace failed."
-wait_for_all_pods_in_namespace "keptn"
+# wait_for_all_pods_in_namespace "keptn" - REMOVED BECAUSE IN EKS WE DONT HAVE ANYTHING IN THAT NAMESPACE DURING THIS SETUP STEP
 
 # # ##############################################
 # # ## Start validation of Istio installation   ##

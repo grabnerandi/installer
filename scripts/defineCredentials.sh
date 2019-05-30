@@ -11,9 +11,9 @@ read -p "GitHub User Name: " GITU
 read -p "GitHub Personal Access Token: " GITAT
 read -p "GitHub User Email: " GITE
 read -p "GitHub Organization: " GITO
-read -p "GKE Cluster Name: " CLN
-read -p "GKE Cluster Zone: " CLZ
-read -p "GKE Project: " PROJ
+# read -p "GKE Cluster Name: " CLN
+# read -p "GKE Cluster Zone: " CLZ
+# read -p "GKE Project: " PROJ
 echo ""
 
 echo ""
@@ -22,9 +22,9 @@ echo "GitHub User Name: $GITU"
 echo "GitHub Personal Access Token: $GITAT"
 echo "GitHub User Email: $GITE"
 echo "GitHub Organization: $GITO"
-echo "GKE Cluster Name: $CLN"
-echo "GKE Cluster Zone: $CLZ"
-echo "GKE Project: $PROJ"
+# echo "GKE Cluster Name: $CLN"
+# echo "GKE Cluster Zone: $CLZ"
+# echo "GKE Project: $PROJ"
 read -p "Is this all correct? (y/n) : " -n 1 -r
 echo ""
 
