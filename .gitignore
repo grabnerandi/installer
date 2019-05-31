@@ -19,3 +19,6 @@ cli/vendor/*
 
 # Built artifacts
 *.exe
+manifests/gen/keptn-domain-configmap.yaml
+manifests/keptn/gen/control.yaml
+scripts/minissl.conf

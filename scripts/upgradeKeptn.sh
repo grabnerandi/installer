@@ -157,7 +157,7 @@ rm $SERVICENAME-deployment.yaml
 
 GATEWAY=$(kubectl describe svc istio-ingressgateway -n istio-system | grep "LoadBalancer Ingress:" | sed 's~LoadBalancer Ingress:[ \t]*~~')
 
-JENKINS_URL="jenkins.keptn.$GATEWAY.xip.io"
+JENKINS_URL="jenkins.keptn.$GATEWAY"
 
 JENKINS_USER=$(kubectl get secret jenkins-secret -n keptn -o=yaml | yq - r data.user | base64 --decode)
 JENKINS_PASSWORD=$(kubectl get secret jenkins-secret -n keptn -o=yaml | yq - r data.password | base64 --decode)
@@ -215,5 +215,5 @@ if [[ $RETRY == $RETRY_MAX ]]; then
 fi
 
 echo "Upgrade to keptn 0.2.2 done."
-echo "You can find your Jenkins here: http://jenkins.keptn.$GATEWAY.xip.io/configure"
+echo "You can find your Jenkins here: http://jenkins.keptn.$GATEWAY/configure"
 echo "Please verify and save your Jenkins configuration."
