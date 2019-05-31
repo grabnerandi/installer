@@ -22,3 +22,4 @@ cli/vendor/*
 manifests/gen/keptn-domain-configmap.yaml
 manifests/keptn/gen/control.yaml
 scripts/minissl.conf
+manifests/gen/config-update-domain.yaml

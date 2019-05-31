@@ -42,13 +42,13 @@ if [[ -z "${GITHUB_ORGANIZATION}" ]]; then
 fi
 
 # Configure knative serving default domain
-rm -f ../manifests/gen/config-domain.yaml
+rm -f ../manifests/gen/config-update-domain.yaml
 
-cat ../manifests/knative/config-domain.yaml | \
-  sed 's~DOMAIN_PLACEHOLDER~'"$DOMAIN"'~' >> ../manifests/gen/config-domain.yaml
+cat ../manifests/knative/config-update-domain.yaml | \
+  sed 's~DOMAIN_PLACEHOLDER~'"$DOMAIN"'~' >> ../manifests/gen/config-update-domain.yaml
 
-kubectl apply -f ../manifests/gen/config-domain.yaml
-verify_kubectl $? "Creating configmap config-domain in knative-serving namespace failed."
+kubectl apply -f ../manifests/gen/config-update-domain.yaml
+verify_kubectl $? "Creating configmap config-update-domain in knative-serving namespace failed."
 
 
 kubectl delete secret -n istio-system istio-ingressgateway-certs
